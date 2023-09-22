@@ -1,51 +1,32 @@
+import CardFilme from "@/components/CardFilme";
+import Titulo from "@/components/Titulo";
 
-import CardFilm from "@/components/CardFilm";
-import Titulo from "../components/titulo";
+async function carregarDados(){
+  const url = "https://api.themoviedb.org/3/trending/movie/week?api_key=1e922667481ab207d642450b0efb461e&language=pt-br"
+  const response = await fetch(url)
+  const json = await response.json()
+  return json.results
+}
 
-export default function Home() {
-    //mock
-    const filmes = [
+export default async function Home() {
 
-      {
-        id: 1,
-        titulo: "Star Wars",
-        nota: 9.5,
-        poster: "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/dw7X9YPjjAfIxKHW04V64Bb9TB0.jpg"
-  
-      },
-      {
-        id: 2,
-        titulo: "Barbie",
-        nota: 9.2,
-        poster: "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/yRRuLt7sMBEQkHsd1S3KaaofZn7.jpg"
-  
-      }
-    ] 
-    
-    
+  const filmes= await carregarDados()
 
   return ( //JSX
   <>
-    <nav className="bg-slate-500 p-2 flex gap-3 items-end">
+    <nav className="bg-slate-500 p-2 flex gap-4 items-end">
+      <h1 className="text-3xl text-zinc-100 font-bold uppercase">FIAP Filmes</h1>
+      <a href="/favoritos">Favoritos</a>
 
-      <h1 className="text-4xl text-zinc-100 font-bold uppercase">FIAP Filmes</h1>
-      <ul>
-        <li>
-          <a href="#">Favoritos</a>
-        </li>
-      </ul>
+
     </nav>
-
-      <Titulo texto="Em alta" />
-
-      <section className="flex flex-wrap gap-2">
-        {filmes.map( filme => <CardFilm filme={filme} />)}
-
-      </section>
+    <Titulo>Em alta</Titulo>
+    <section className="flex flex-wrap gap-2">
+      {filmes.map( filme => <CardFilme filme={filme} />)}
+    </section>
 
 
-      <Titulo texto="Lançamentos" />
-
-  </>
+    <Titulo>Lançamento</Titulo>
+    </>
   )
 }
